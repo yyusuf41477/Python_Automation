@@ -1,0 +1,49 @@
+username yyusuf privilege 15 password cisco123
+!
+transport input ssh
+ip domain name yubz.local
+crypto key generate rsa modulus 1024
+ip ssh version 2
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.255
+ ip router isis
+!
+interface Ethernet0/0
+ description CONNECTION_TO_PE1
+ ip address 192.168.12.2 255.255.255.0
+ ip router isis
+ no shutdown
+ duplex auto
+!
+interface Ethernet0/1
+ description CONNECTION_TO_PE2
+ ip address 192.168.24.2 255.255.255.0
+ no shutdown
+ ip router isis
+ duplex auto
+!
+interface Ethernet0/2
+ description CONNECTION_TO_P2
+ ip address 192.168.23.2 255.255.255.0
+ no shutdown
+ ip router isis
+ duplex auto
+!
+interface Ethernet0/3
+ description OOB_MGMT_CONNEXN
+ ip address 192.168.224.102 255.255.255.0
+ no shutdown
+ duplex auto
+!
+router isis
+ mpls ldp autoconfig level-2
+ net 49.0001.1921.6822.4102.00
+ is-type level-2-only
+ log-adjacency-changes
+!
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
