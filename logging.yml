@@ -1,0 +1,32 @@
+---
+# tasks file for logging
+
+- name: NXOS DEVICES
+  nxos_config:
+     lines:
+       - logging server 192.168.182.72 5  use-vrf management
+       - logging server 192.168.182.109 5 use-vrf management
+       - logging server 192.168.182.72 5
+       - logging server 192.168.182.109 5
+  when: ansible_network_os == 'nxos'
+
+- name: IOSXR DEVICES
+  iosxr_config:
+     lines:
+       - logging 192.168.182.72 vrf default severity info port 9015
+       - logging 192.168.182.109 vrf default severity info port 9015
+  when: ansible_network_os == 'iosxr'
+
+- name: IOS DEVICES
+  ios_config:
+     lines:
+       - logging 192.168.182.72
+       - logging 192.168.182.109
+  when: ansible_network_os == 'ios'
+
+- name: WLC DEVICES
+  aireos_config:
+     lines:
+       - logging 192.168.182.72
+       - logging 192.168.182.109
+  when: ansible_network_os == 'aireos'
